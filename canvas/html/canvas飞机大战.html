@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="../css/reset.css">
+    <title>微信canvas飞机大战</title>
+    <style>
+        * {
+            touch-action: pan-y;
+        }
+        body{
+            text-align: center;
+        }
+        /* canvas{
+            background-color: gray;
+        } */
+        img{
+            width: 31px;
+            height: 31px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -15px;
+            margin-top: -15px;   
+        }
+    </style>
+</head>
+<body>
+    <canvas id="c" width="320" height="568"></canvas>
+    <img src="../img/loading.gif" alt="">
+    <!-- 懒加载:当用到的时候再加载 用百度搜索图片 浏览淘宝、京东 -->
+</body>
+<script src="../js/preload.js"></script>
+<script src="../js/isPhone.js"></script>
+<script src="../js/bgScroll.js"></script>
+<script src="../js/controlHero.js"></script>
+<script>
+    window.onload= ()=>{
+        // 执行预加载
+        loading(gameStart);
+    }
+    // 确定屏幕大小
+    let sw=320;
+    let sh=568;
+    // console.log(isMobile());
+    if(isMobile()){
+        // console.log("我是移动端");
+        sw=window.innerWidth;
+        sh=window.innerHeight;
+    }
+    // 获取canvas
+    let canvas=document.getElementById("c");
+    canvas.width=sw;
+    canvas.height=sh;
+    // console.log(canvas);
+    let ctx=canvas.getContext("2d");
+
+
+    // 控制游戏运行
+    let timer=null;
+
+    // 游戏开始
+    function gameStart(){
+        // console.log(document.querySelector("img")[0].style.display);
+        document.querySelector("img").style.display="none";
+        timer=setInterval(begin,30);
+    }
+
+    function begin(){
+        ctx.clearRect(0,0,sw,sh);
+        // 1、背景滚动
+        bgScroll();
+        // 2、英雄
+        hero.draw();
+        control();
+        // 3、子弹
+        createBullet();
+        // 4、奖励
+        createProp();
+        // 5、敌机
+        createEnemy();
+        // 6、碰撞
+        allMove();
+    }
+    function end(){
+        // 统计总分
+        gameover();
+    }
+</script>
+<script src="../js/hero.js"></script>
+<script src="../js/rect.js"></script>
+<script src="../js/bullet.js"></script>
+<script src="../js/prop.js"></script>
+<script src="../js/enemy.js"></script>
+<script src="../js/check.js"></script>
+<script src="../js/rand.js"></script>
+</html>
